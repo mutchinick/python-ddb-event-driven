@@ -1,0 +1,87 @@
+# ----------------------------------------
+# Python virtual environments & Pipenv
+# ----------------------------------------
+.venv/
+Pipfile.lock
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# ----------------------------------------
+# AWS CDK / Cloud Assembly
+# ----------------------------------------
+cdk.out/
+*.asset.*
+*.template.json
+
+# SAM / CloudFormation packaging
+.aws-sam/
+*.zip
+
+# Lambda build artifacts (if zipping manually)
+**/lambda_build/
+**/package.zip
+**/deployment.zip
+
+# ----------------------------------------
+# Test and coverage reports
+# ----------------------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# ----------------------------------------
+# Environment & credentials
+# ----------------------------------------
+.env
+.env.*
+.aws/
+*.pem
+*.key
+*.crt
+
+# ----------------------------------------
+# macOS & system files
+# ----------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+Thumbs.db
+
+# ----------------------------------------
+# Logs
+# ----------------------------------------
+logs/
+*.log
+*.tmp
+*.bak
+
+# ----------------------------------------
+# NodeJS junk (if CDK uses TypeScript helpers)
+# ----------------------------------------
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ----------------------------------------
+# Environment variables
+# ----------------------------------------
+.env*
+!.env.example
