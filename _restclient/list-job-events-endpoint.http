@@ -1,0 +1,5 @@
+@baseUrl = {{$dotenv BASE_URL}}
+
+### List JOB Events Endpoint
+GET {{baseUrl}}/jobs/ABCD1234/events
+

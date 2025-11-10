@@ -1,0 +1,26 @@
+@baseUrl = {{$dotenv BASE_URL}}
+
+### Create JOB Endpoint
+POST {{baseUrl}}/jobs
+Content-Type: application/json
+
+{
+  "job_id": "ABCD1234",
+  "job_name": "Sample Job ABCD1234"
+}
+
+### Create JOB Endpoint
+@randomJobId = {{$randomInt 1000 9999}}
+POST {{baseUrl}}/jobs
+Content-Type: application/json
+
+{
+  "job_id": "ABCD{{randomJobId}}",
+  "job_name": "Sample Job ABCD{{randomJobId}}"
+}
+
+### List JOB Events Endpoint
+GET {{baseUrl}}/jobs/ABCD1234/events
+
+### List JOB Events Endpoint
+GET {{baseUrl}}/jobs/ABCD{{randomJobId}}/events
