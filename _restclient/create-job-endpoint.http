@@ -18,9 +18,3 @@ Content-Type: application/json
   "job_id": "ABCD{{randomJobId}}",
   "job_name": "Sample Job ABCD{{randomJobId}}"
 }
-
-### List JOB Events Endpoint
-GET {{baseUrl}}/jobs/ABCD1234/events
-
-### List JOB Events Endpoint
-GET {{baseUrl}}/jobs/ABCD{{randomJobId}}/events

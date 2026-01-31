@@ -4,10 +4,13 @@ from typing import TYPE_CHECKING, Any, Dict
 import boto3
 
 from services.__errors.error_event_already_raised import ErrorEventAlreadyRaisedException
+from services.__events.all_tasks_completed_event import (
+    AllTasksCompletedEvent,
+    AllTasksCompletedEventData,
+)
 from services.__events.event_base import EventBase
 from services.__events.event_store_client import EventStoreClient
-from services.__events.job_created_event import JobCreatedEvent, JobCreatedEventData
-from services.__events.step_processed_event import StepProcessedEvent
+from services.__events.job_finalized_event import JobFinalizedEvent
 
 if TYPE_CHECKING:
     from aws_lambda_typing.context import Context
@@ -30,30 +33,30 @@ event_store_client = EventStoreClient(dynamodb_client, TABLE_NAME)
 
 def handler(sqs_event: SQSEvent, _context: Context) -> None:
     """
-    SQS-triggered Lambda for JobCreatedEvent events.
+    SQS-triggered Lambda for AllTasksCompletedEvent events.
     """
     for sqs_record in sqs_event["Records"]:
         try:
-            incoming_event = EventBase.from_eventbridge_sqs_record(sqs_record, JobCreatedEvent)
-            print(f"INFO: JobCreatedEvent received with job ID: {incoming_event.idempotencyKey}")
+            incoming_event = EventBase.from_eventbridge_sqs_record(sqs_record, AllTasksCompletedEvent)
+            print(f"INFO: AllTasksCompletedEvent received with job ID: {incoming_event.idempotencyKey}")
 
         except Exception as e:
             # When parsing fails, log and remove the message from the queue because it's a poison message
             print(f"ERROR: Invalid SQS record: {e}. The record will be removed from the queue.")
             continue
 
-        incoming_event_data: JobCreatedEventData = incoming_event.eventData
+        incoming_event_data: AllTasksCompletedEventData = incoming_event.eventData
 
-        event = StepProcessedEvent.from_data(
+        event = JobFinalizedEvent.from_data(
             job_id=incoming_event_data.job_id,
             job_name=incoming_event_data.job_name,
-            job_status="PROCESSING",
+            job_status="FINALIZED",
         )
 
         try:
             event_store_client.raise_event(event)
             # When successful, remove the message from the queue
-            print(f"SUCCESS: StepProcessedEvent raised for job ID: {incoming_event.idempotencyKey}")
+            print(f"SUCCESS: JobFinalizedEvent raised for job ID: {incoming_event.idempotencyKey}")
 
         except ErrorEventAlreadyRaisedException:
             # When the event was already raised, log and remove the message from the queue

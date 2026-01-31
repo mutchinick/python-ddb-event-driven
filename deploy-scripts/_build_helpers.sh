@@ -73,7 +73,7 @@ build_requirements_txt() {
 		if [[ -s "${tmp_req}" ]]; then cat "${tmp_req}"; fi
 		if [[ -f "${extra}" ]]; then cat "${extra}"; fi
 	} |
-		sed -E '/^(boto3|botocore|awslambdaric|services|aws_lambda_typing|mypy_boto3_dynamodb)([=<>!].*)?$/d' |
+		sed -E '/^(boto3|botocore|awslambdaric|services|aws_lambda_typing|mypy_boto3_dynamodb|pytest|pytest-mock|pytest-cov)([=<>!].*)?$/d' |
 		awk 'NF' |
 		sort -u >"${out_file}"
 

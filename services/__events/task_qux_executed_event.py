@@ -7,23 +7,23 @@ from pydantic import BaseModel
 from services.__events.event_base import EventBase
 
 
-class StepProcessedEventData(BaseModel):
+class TaskQuxExecutedEventData(BaseModel):
     job_id: str
     job_name: str
     job_status: str
 
 
-class StepProcessedEvent(EventBase):
-    eventName: str = "STEP_PROCESSED_EVENT"
-    eventData: StepProcessedEventData
+class TaskQuxExecutedEvent(EventBase):
+    eventName: str = "TASK_QUX_EXECUTED_EVENT"
+    eventData: TaskQuxExecutedEventData
 
     @classmethod
-    def from_data(cls, job_id: str, job_name: str, job_status: str) -> StepProcessedEvent:
+    def from_data(cls, job_id: str, job_name: str, job_status: str) -> TaskQuxExecutedEvent:
         """
-        Factory method to create a StepProcessedEvent from event data fields.
+        Factory method to create a TaskQuxExecutedEvent from event data fields.
         Use this for manual event creation in APIs and workers.
         """
-        event_data = StepProcessedEventData(
+        event_data = TaskQuxExecutedEventData(
             job_id=job_id,
             job_name=job_name,
             job_status=job_status,

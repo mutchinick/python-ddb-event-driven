@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 from typing import TYPE_CHECKING, Any, Dict
 
 import boto3
@@ -7,8 +6,8 @@ import boto3
 from services.__errors.error_event_already_raised import ErrorEventAlreadyRaisedException
 from services.__events.event_base import EventBase
 from services.__events.event_store_client import EventStoreClient
-from services.__events.job_completed_event import JobCompletedEvent, JobCompletedEventData
 from services.__events.step_processed_event import StepProcessedEvent, StepProcessedEventData
+from services.__events.task_bar_executed_event import TaskBarExecutedEvent
 
 if TYPE_CHECKING:
     from aws_lambda_typing.context import Context
@@ -45,20 +44,18 @@ def handler(sqs_event: SQSEvent, _context: Context) -> None:
 
         incoming_event_data: StepProcessedEventData = incoming_event.eventData
 
-        event = JobCompletedEvent(
-            idempotencyKey=incoming_event.idempotencyKey,
-            createdAt=datetime.now().isoformat(),
-            eventData=JobCompletedEventData(
-                job_id=incoming_event_data.job_id,
-                job_name=incoming_event_data.job_name,
-                job_status="COMPLETED",
-            ),
+        event = TaskBarExecutedEvent.from_data(
+            job_id=incoming_event_data.job_id,
+            job_name=incoming_event_data.job_name,
+            job_status="EXECUTED",
         )
 
         try:
             event_store_client.raise_event(event)
             # When successful, remove the message from the queue
-            print(f"SUCCESS: JobCompletedEvent raised for job ID: {incoming_event.idempotencyKey}")
+            print(
+                f"SUCCESS: TaskBarExecutedEvent raised for job ID: {incoming_event.idempotencyKey}"
+            )
 
         except ErrorEventAlreadyRaisedException:
             # When the event was already raised, log and remove the message from the queue

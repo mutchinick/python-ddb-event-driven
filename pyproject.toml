@@ -19,3 +19,19 @@ typeCheckingMode = "strict"
 
 
 pythonVersion = "3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["services"]
+pythonpath = ["."]
+python_files = ["*_test.py", "test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+]

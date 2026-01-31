@@ -1,0 +1,18 @@
+@baseUrl = {{$dotenv BASE_URL}}
+@randomJobId = ABCD{{$randomInt 1000 9999}}
+
+### CREATE_JOB
+# @name createJobRequest
+POST {{baseUrl}}/jobs
+Origin: https://localhost
+Content-Type: application/json
+
+{
+  "job_id": "{{randomJobId}}",
+  "job_name": "Sample Job {{randomJobId}}"
+}
+
+### LIST_JOB_EVENTS - Initial Check
+GET {{baseUrl}}/jobs/{{createJobRequest.response.body.$.result.job_id}}/events
+Origin: https://localhost
+Content-Type: application/json

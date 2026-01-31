@@ -4,16 +4,22 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.typeCheckingMode": "strict",
   "python.analysis.extraPaths": ["${workspaceFolder}"],
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": true,
-    "source.fixAll": true
-  },
   "python.formatting.provider": "black",
   "python.formatting.blackArgs": ["--line-length", "100"],
   "ruff.enable": true,
   "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
-  "ruff.lint.args": ["--fix"],
+  "ruff.nativeServer": true,
+  "ruff.configuration": "./pyproject.toml",
+  "flake8.enabled": false,
+  "python.linting.flake8Enabled": false,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
+    }
+  },
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.exclude": {
@@ -29,5 +35,13 @@
   },
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "on"
+  },
+  "prettier.requireConfig": false,
+  "prettier.configPath": ".prettierrc",
+  "cSpell.words": ["isoformat", "pydantic", "staticmethod"]
 }

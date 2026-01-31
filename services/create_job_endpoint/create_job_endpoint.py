@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 from typing import TYPE_CHECKING, Any, Dict
 
 import boto3
@@ -7,10 +6,7 @@ from pydantic import BaseModel, ValidationError
 
 from services.__errors.error_event_already_raised import ErrorEventAlreadyRaisedException
 from services.__events.event_store_client import EventStoreClient
-from services.__events.job_created_event import (
-    JobCreatedEvent,
-    JobCreatedEventData,
-)
+from services.__events.job_created_event import JobCreatedEvent
 from services.__http_helpers.http_response import HttpResponse
 
 if TYPE_CHECKING:
@@ -78,14 +74,10 @@ def handler(event: APIGatewayProxyEventV2, _context: Context) -> APIGatewayProxy
             400, {"message": "Bad Request", "details": str(e)}
         )
 
-    job_event = JobCreatedEvent(
-        idempotencyKey=f"JOB_ID#{incoming_create_job_request.job_id}",
-        createdAt=datetime.now().isoformat(),
-        eventData=JobCreatedEventData(
-            job_id=incoming_create_job_request.job_id,
-            job_name=incoming_create_job_request.job_name,
-            job_status="CREATED",
-        ),
+    job_event = JobCreatedEvent.from_data(
+        job_id=incoming_create_job_request.job_id,
+        job_name=incoming_create_job_request.job_name,
+        job_status="CREATED",
     )
 
     try:
