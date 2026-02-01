@@ -36,7 +36,7 @@ class EventStoreClient:
         item: Dict[str, Any] = {"pk": pk, "sk": sk, **event.model_dump()}
 
         try:
-            self._table.put_item(Item=item, ConditionExpression="attribute_not_exists(pk)")
+            self._table.put_item(Item=item, ConditionExpression="attribute_not_exists(sk)")
             # When successful, log the event storage
             print(f"SUCCESS: Raised event {sk} with key {pk}")
 
