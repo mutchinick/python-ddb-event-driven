@@ -1,0 +1,21 @@
+[tool.ruff]
+include = ["infra", "services"]
+line-length = 100
+target-version = "py312"
+lint.extend-select = ["B", "I", "E", "F", "W"]
+lint.extend-ignore = ["E501"]
+fix = true
+
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+
+[tool.pyright]
+include = ["infra", "services"]
+exclude = [".venv", ".ruff_cache", ".pytest_cache", "__pycache__"]
+typeCheckingMode = "strict"
+
+
+pythonVersion = "3.12"

@@ -1,0 +1,36 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+aws-cdk-lib = "<3,>=2"
+constructs = "<11,>=10"
+boto3 = "*"
+pydantic = "*"
+
+[dev-packages]
+black = "*"
+ruff = "*"
+pipreqs = "*"
+aws-lambda-typing = "*"
+boto3-stubs = {extras = ["dynamodb"], version = "==1.40.56"}
+pyright = "*"
+
+[requires]
+python_version = "3.12"
+
+[scripts]
+format = "pipenv run ruff format ."
+lint = "pipenv run ruff check ."
+lint-fix = "pipenv run ruff check . --fix"
+type-check = "pipenv run pyright --stats"
+
+build-requirements = "bash ./deploy-scripts/build-all-requirements-txt.sh"
+build-lambdas = "bash ./deploy-scripts/build-all-lambdas.sh"
+build-dist = "bash ./deploy-scripts/build-dist.sh"
+
+bootstrap = "npx cdk bootstrap"
+synth = "npx cdk synth"
+deploy = "npx cdk deploy --require-approval=any-change"
+destroy = "npx cdk destroy"
